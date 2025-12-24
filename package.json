@@ -1,0 +1,13 @@
+{
+  "name": "@o3co/js.util",
+  "version": "0.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "utils/*"
+  ],
+  "scripts": {
+    "build": "make all/build"
+  }
+}

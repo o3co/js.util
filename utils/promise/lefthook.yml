@@ -1,0 +1,11 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - root: utils/promise
+      glob: utils/promise/*.{js,ts,mjs,mts}
+      run: npx -y @biomejs/biome check --config-path ./biome.jsonc --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
+      stage_fixed: true
+    - root: utils/promise
+      glob: utils/promise/*.{js,ts,mjs,mts}
+      run: npm run typecheck
+      stage_fixed: true
