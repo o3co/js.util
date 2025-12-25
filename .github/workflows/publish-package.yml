@@ -31,6 +31,8 @@ jobs:
           node-version: 22
           registry-url: https://npm.pkg.github.com/
       - run: npm install
+      - run: npm run ${{github.event.release.tag_name}}
+        working-directory: ./utils/storage
       - run: make build
         working-directory: ./utils/storage
       - run: npm publish
@@ -51,27 +53,11 @@ jobs:
           node-version: 22
           registry-url: https://npm.pkg.github.com/
       - run: npm install
+      - run: npm run ${{github.event.release.tag_name}}
+        working-directory: ./utils/promise
       - run: make build
         working-directory: ./utils/promise
       - run: npm publish
         working-directory: ./utils/promise
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-  version-increment:
-    needs:
-      - publish-storage
-      - publish-promise
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          registry-url: https://npm.pkg.github.com/
-      - run: |
-            LATEST_VERSION=$(git tag --sort=-creatordate | head -1)
-            npm --no-git-tag-version version $LATEST_VERSION
-

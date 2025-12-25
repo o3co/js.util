@@ -9,4 +9,3 @@ all/build:
 		make -C $$subdir build;\
 	done
 
-

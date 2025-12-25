@@ -1,6 +1,6 @@
 {
   "name": "@o3co/js.util.promise",
-  "version": "0.0.1",
+  "version": "0.0-snapshot",
   "type": "module",
   "author": "1o1 developer <develop@1o1.co.jp>",
   "main": "index.js",
@@ -16,8 +16,7 @@
     "typecheck": "tsc --noEmit",
     "format": "npx @biomejs/biome --config-path ./biome.jsonc --write \"src/**/*.{js,ts,mjs,mts,json,yml}\""
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "peerDependencies": {
     "p-limit": "7.2.x"
   },
