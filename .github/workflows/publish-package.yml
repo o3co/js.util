@@ -31,7 +31,7 @@ jobs:
           node-version: 22
           registry-url: https://npm.pkg.github.com/
       - run: npm install
-      - run: npm run ${{github.event.release.tag_name}}
+      - run: npm version ${{github.event.release.tag_name}}
         working-directory: ./utils/storage
       - run: make build
         working-directory: ./utils/storage
@@ -53,7 +53,7 @@ jobs:
           node-version: 22
           registry-url: https://npm.pkg.github.com/
       - run: npm install
-      - run: npm run ${{github.event.release.tag_name}}
+      - run: npm version ${{github.event.release.tag_name}}
         working-directory: ./utils/promise
       - run: make build
         working-directory: ./utils/promise
