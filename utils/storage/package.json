@@ -1,6 +1,6 @@
 {
   "name": "@o3co/js.util.storage",
-  "version": "0.0-snapshot",
+  "version": "0.1-snapshot",
   "type": "module",
   "author": "1o1 developer <develop@1o1.co.jp>",
   "main": "index.js",
