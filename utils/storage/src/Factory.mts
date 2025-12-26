@@ -1,29 +1,31 @@
 import path from "node:path";
-import type { Storage } from "./Storage.mjs";
+import { Adapter } from "./Adapter.mjs";
+import { HttpStorage } from "./HttpStorage.mjs";
 import { LocalStorage } from "./LocalStorage.mjs";
 import { S3Storage } from "./S3Storage.mjs";
-import { HttpStorage } from "./HttpStorage.mjs";
-import { Adapter } from "./Adapter.mjs";
+import type { Storage } from "./Storage.mjs";
 
 export type StorageType = "file" | "s3" | "http";
 
 export interface CreateAdapterRequest {
-  protocols: Array<StorageType>
+  protocols: Array<StorageType>;
 }
 
 export class Factory {
-  protected config: Record<string, any>
+  protected config: Record<string, any>;
 
   constructor(config) {
-    this.config = config
+    this.config = config;
   }
 
-  createAdapter({ protocols = ["file", "s3", "http"]}: CreateAdapterRequest): Adapter {
-    return new Adapter({ protocols, factory: this })
+  createAdapter({
+    protocols = ["file", "s3", "http"],
+  }: CreateAdapterRequest): Adapter {
+    return new Adapter({ protocols, factory: this });
   }
 
   createForUri(uri: URL): Storage {
-    return this.createForProtocol(uri.protocol.slice(0, -1)) 
+    return this.createForProtocol(uri.protocol.slice(0, -1));
   }
 
   createForProtocol(protocol: string): Storage {
