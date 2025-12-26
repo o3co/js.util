@@ -1,0 +1,58 @@
+
+name: Depublish Packages 
+    
+on:
+  release:
+    types: [deleted]
+
+jobs:
+  depublish-storage:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://npm.pkg.github.com/
+      - run: npm unpublish @o3co/js.util.storage@${{github.event.release.tag_name}}
+        working-directory: ./utils/storage
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+  depublish-promise:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://npm.pkg.github.com/
+      - run: npm unpublish @o3co/js.util.promise@${{github.event.release.tag_name}}
+        working-directory: ./utils/promise
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+  depublish-log:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://npm.pkg.github.com/
+      - run: npm unpublish @o3co/js.util.log@${{github.event.release.tag_name}}
+        working-directory: ./utils/log
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
