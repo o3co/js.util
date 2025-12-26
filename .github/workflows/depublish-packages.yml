@@ -7,102 +7,36 @@ on:
     types: [deleted]
 
 jobs:
-  depublish-storage:
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-    steps:
-      - id: version
-        run: |
-          OWNER="o3co"
-          PACKAGE_NAME="js.util.storage"
-          PACKAGE_TYPE="npm"
-          API_URL="orgs/$OWNER/packages/${PACKAGE_TYPE}/${PACKAGE_NAME}/versions"
-
-          # GitHub CLIを使用してパッケージバージョンをリストし、jqでフィルタリングしてIDを取得
-          VERSION_ID=$(gh api \
-            --method GET \
-            -H "Accept: application/vnd.github+json" \
-            "$API_URL" \
-            --jq 'map(select(.name == "'${{github.event.release.tag_name}}'")) | .[0].id')
-          
-          echo "::notice::Delete Package ${VERSION_ID}"
-
-          if [ -z "$VERSION_ID" ]; then
-            echo "::notice::No package found"
-          else
-            $(gh api \
-              --method DELETE \
-              --input /dev/null \
-              -H "Accept: application/vnd.github+json" \
-              "${API_URL}/${VERSION_ID}" 
-            )
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  depublish-promise:
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-    steps:
-      - id: version
-        run: |
-          OWNER="o3co"
-          PACKAGE_NAME="js.util.promise"
-          PACKAGE_TYPE="npm"
-          API_URL="orgs/$OWNER/packages/${PACKAGE_TYPE}/${PACKAGE_NAME}/versions"
-
-          # GitHub CLIを使用してパッケージバージョンをリストし、jqでフィルタリングしてIDを取得
-          VERSION_ID=$(gh api \
-            --method GET \
-            -H "Accept: application/vnd.github+json" \
-            "$API_URL" \
-            --jq 'map(select(.name == "'${{github.event.release.tag_name}}'")) | .[0].id')
-          
-          echo "::notice::Delete Package ${VERSION_ID}"
-
-          if [ -z "$VERSION_ID" ]; then
-            echo "::notice::No package found"
-          else
-            $(gh api \
-              --method DELETE \
-              --input /dev/null \
-              -H "Accept: application/vnd.github+json" \
-              "${API_URL}/${VERSION_ID}" 
-            )
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   depublish-log:
     runs-on: ubuntu-latest
     permissions:
       packages: write
     steps:
-      - id: version
-        run: |
-          OWNER="o3co"
-          PACKAGE_NAME="js.util.log"
-          PACKAGE_TYPE="npm"
-          API_URL="orgs/$OWNER/packages/${PACKAGE_TYPE}/${PACKAGE_NAME}/versions"
-
-          # GitHub CLIを使用してパッケージバージョンをリストし、jqでフィルタリングしてIDを取得
-          VERSION_ID=$(gh api \
-            --method GET \
-            -H "Accept: application/vnd.github+json" \
-            "$API_URL" \
-            --jq 'map(select(.name == "'${{github.event.release.tag_name}}'")) | .[0].id')
-          
-          echo "::notice::Delete Package ${VERSION_ID}"
-
-          if [ -z "$VERSION_ID" ]; then
-            echo "::notice::No package found"
-          else
-            $(gh api \
-              --method DELETE \
-              --input /dev/null \
-              -H "Accept: application/vnd.github+json" \
-              "${API_URL}/${VERSION_ID}" 
-            )
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: o3co/github-action-unpublish-package@v1
+        with:
+          package-type: "npm"
+          version: ${{github.event.release.tag_name}}
+          name: "js.util.log"
+          token: ${{secrets.GITHUB_TOKEN}}
+  depublish-promise:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - uses: o3co/github-action-unpublish-package@v1
+        with:
+          package-type: "npm"
+          version: ${{github.event.release.tag_name}}
+          name: "js.util.promise"
+          token: ${{secrets.GITHUB_TOKEN}}
+  depublish-storage:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - uses: o3co/github-action-unpublish-package@v1
+        with:
+          package-type: "npm"
+          version: ${{github.event.release.tag_name}}
+          name: "js.util.storage"
+          token: ${{secrets.GITHUB_TOKEN}}
