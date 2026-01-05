@@ -4,10 +4,14 @@
   "main": "index.js",
   "license": "MIT",
   "private": true,
+  "packageManager": "pnpm@10.27.0",
   "workspaces": [
     "utils/*"
   ],
   "scripts": {
     "build": "make all/build"
+  },
+  "dependencies": {
+    "typescript": "5.9.3"
   }
 }

@@ -5,6 +5,7 @@
   "author": "1o1 developer <develop@1o1.co.jp>",
   "main": "index.js",
   "license": "MIT",
+  "packageManager": "pnpm@10.27.0",
   "exports": {
     "./*": "./built/*"
   },
@@ -14,7 +15,7 @@
   "scripts": {
     "build": "tsc --build",
     "typecheck": "tsc --noEmit",
-    "format": "npx @biomejs/biome --config-path ./biome.jsonc --write \"src/**/*.{js,ts,mjs,mts,json,yml}\""
+    "format": "pnpm exec @biomejs/biome --config-path ./biome.jsonc --write \"src/**/*.{js,ts,mjs,mts,json,yml}\""
   },
   "dependencies": {},
   "peerDependencies": {
