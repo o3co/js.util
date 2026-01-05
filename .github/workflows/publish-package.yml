@@ -40,7 +40,7 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           cache: 'pnpm'
       - run: pnpm install
-      - run: pnpm version ${{github.event.release.tag_name}}
+      - run: pnpm version  --no-commit-hooks --allow-same-version --no-git-tag-version --no-workspaces-update ${{github.event.release.tag_name}}
         working-directory: ./utils/storage
       - run: make build
         working-directory: ./utils/storage
@@ -67,7 +67,7 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           cache: 'pnpm'
       - run: pnpm install
-      - run: pnpm version ${{github.event.release.tag_name}}
+      - run: pnpm version  --no-commit-hooks --allow-same-version --no-git-tag-version --no-workspaces-update ${{github.event.release.tag_name}}
         working-directory: ./utils/promise
       - run: make build
         working-directory: ./utils/promise
@@ -94,7 +94,7 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           cache: 'pnpm'
       - run: pnpm install
-      - run: pnpm version ${{github.event.release.tag_name}}
+      - run: pnpm version  --no-commit-hooks --allow-same-version --no-git-tag-version --no-workspaces-update ${{github.event.release.tag_name}}
         working-directory: ./utils/log
       - run: make build
         working-directory: ./utils/log
