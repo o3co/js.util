@@ -18,7 +18,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'pnpm'
       - run: pnpm install
       - run: make build
 
@@ -38,7 +37,6 @@ jobs:
         with:
           node-version: 22
           registry-url: https://npm.pkg.github.com/
-          cache: 'pnpm'
       - run: pnpm install
       - run: pnpm version  --no-commit-hooks --allow-same-version --no-git-tag-version --no-workspaces-update ${{github.event.release.tag_name}}
         working-directory: ./utils/storage
@@ -65,7 +63,6 @@ jobs:
         with:
           node-version: 22
           registry-url: https://npm.pkg.github.com/
-          cache: 'pnpm'
       - run: pnpm install
       - run: pnpm version  --no-commit-hooks --allow-same-version --no-git-tag-version --no-workspaces-update ${{github.event.release.tag_name}}
         working-directory: ./utils/promise
@@ -92,7 +89,6 @@ jobs:
         with:
           node-version: 22
           registry-url: https://npm.pkg.github.com/
-          cache: 'pnpm'
       - run: pnpm install
       - run: pnpm version  --no-commit-hooks --allow-same-version --no-git-tag-version --no-workspaces-update ${{github.event.release.tag_name}}
         working-directory: ./utils/log
