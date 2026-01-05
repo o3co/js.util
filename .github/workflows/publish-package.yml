@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v4
         with:
           package_json_file: package.json
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: 'pnpm'
       - run: pnpm install
       - run: make build
 
@@ -38,6 +38,7 @@ jobs:
         with:
           node-version: 22
           registry-url: https://npm.pkg.github.com/
+          cache: 'pnpm'
       - run: pnpm install
       - run: pnpm version ${{github.event.release.tag_name}}
         working-directory: ./utils/storage
@@ -64,6 +65,7 @@ jobs:
         with:
           node-version: 22
           registry-url: https://npm.pkg.github.com/
+          cache: 'pnpm'
       - run: pnpm install
       - run: pnpm version ${{github.event.release.tag_name}}
         working-directory: ./utils/promise
@@ -90,6 +92,7 @@ jobs:
         with:
           node-version: 22
           registry-url: https://npm.pkg.github.com/
+          cache: 'pnpm'
       - run: pnpm install
       - run: pnpm version ${{github.event.release.tag_name}}
         working-directory: ./utils/log
