@@ -10,7 +10,6 @@ import type {
   LoadAsBufferResponse,
   LoadAsByteArrayResponse,
   LoadAsStringResponse,
-  LoadResponse,
   SaveOptions,
   SaveResponse,
 } from "./Storage.mjs";
@@ -40,7 +39,7 @@ export class Storage implements IStorage {
       ContentType: contentType ?? undefined,
     });
 
-    const response = await this.client.send(command);
+    const _response = await this.client.send(command);
 
     return {
       uri,
@@ -63,10 +62,8 @@ export class Storage implements IStorage {
         throw new Error("Failed to response body undefined");
       }
 
-      const data = await response.Body;
-
       return {
-        data: response.Body,
+        data: await response.Body,
         uri,
         contentType: response?.ContentType,
       };
