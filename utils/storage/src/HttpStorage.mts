@@ -1,12 +1,12 @@
 import { fetch } from "undici";
 import type { Response as FetchResponse } from "undici-types";
 import type {
+  Storage as IStorage,
   LoadAsBufferResponse,
   LoadAsByteArrayResponse,
   LoadAsStringResponse,
   SaveOptions,
   SaveResponse,
-  Storage,
 } from "./Storage.mjs";
 
 interface LoadAsRawResponse {
@@ -15,7 +15,7 @@ interface LoadAsRawResponse {
   contentType: string | undefined;
 }
 
-export class HttpStorage implements Storage {
+export class Storage implements IStorage {
   save(
     uri: URL,
     data: string | Buffer | Uint8Array,

@@ -1,8 +1,5 @@
 import path from "node:path";
 import { Adapter } from "./Adapter.mjs";
-import { HttpStorage } from "./HttpStorage.mjs";
-import { LocalStorage } from "./LocalStorage.mjs";
-import { S3Storage } from "./S3Storage.mjs";
 import type { Storage } from "./Storage.mjs";
 
 export type StorageType = "file" | "s3" | "http";
@@ -24,19 +21,24 @@ export class Factory {
     return new Adapter({ protocols, factory: this });
   }
 
-  createForUri(uri: URL): Storage {
-    return this.createForProtocol(uri.protocol.slice(0, -1));
+  async createForUri(uri: URL): Promise<Storage> {
+    return await this.createForProtocol(uri.protocol.slice(0, -1));
   }
 
-  createForProtocol(protocol: string): Storage {
+  async createForProtocol(protocol: string): Promise<Storage> {
     switch (protocol) {
       case "http":
-      case "https":
-        return new HttpStorage();
-      case "file":
-        return new LocalStorage();
+      case "https": {
+        const { Storage } = await import("./HttpStorage.mjs");
+        return new Storage();
+      }
+      case "file": {
+        const { Storage } = await import("./LocalStorage.mjs");
+        return new Storage();
+      }
       case "s3": {
-        return new S3Storage();
+        const { Storage } = await import("./S3Storage.mjs");
+        return new Storage();
       }
       default:
         throw new Error(`Unsupported storage protocol: ${protocol}`);

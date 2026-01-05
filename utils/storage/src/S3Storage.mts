@@ -6,13 +6,13 @@ import {
 
 import type { StreamingBlobPayloadOutputTypes } from "@smithy/types";
 import type {
+  Storage as IStorage,
   LoadAsBufferResponse,
   LoadAsByteArrayResponse,
   LoadAsStringResponse,
   LoadResponse,
   SaveOptions,
   SaveResponse,
-  Storage,
 } from "./Storage.mjs";
 
 interface LoadAsRawResponse {
@@ -21,7 +21,7 @@ interface LoadAsRawResponse {
   contentType: string | undefined;
 }
 
-export class S3Storage implements Storage {
+export class Storage implements IStorage {
   private client: S3Client;
 
   constructor() {

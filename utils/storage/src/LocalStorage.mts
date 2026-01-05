@@ -3,15 +3,15 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileTypeFromBuffer } from "file-type";
 import type {
+  Storage as IStorage,
   LoadAsBufferResponse,
   LoadAsByteArrayResponse,
   LoadAsStringResponse,
   SaveOptions,
   SaveResponse,
-  Storage,
 } from "./Storage.mjs";
 
-export class LocalStorage implements Storage {
+export class Storage implements IStorage {
   async save(
     uri: URL,
     data: string | Buffer | Uint8Array,
