@@ -12,11 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: package.json
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install
-      - run: make all/build
+      - run: pnpm install
+      - run: make build
 
   publish-storage:
     needs: build
@@ -26,16 +29,20 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: package.json
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           registry-url: https://npm.pkg.github.com/
-      - run: npm install
-      - run: npm version ${{github.event.release.tag_name}}
+      - run: pnpm install
+      - run: pnpm version  --no-commit-hooks --allow-same-version --no-git-tag-version --no-workspaces-update ${{github.event.release.tag_name}}
         working-directory: ./utils/storage
       - run: make build
         working-directory: ./utils/storage
-      - run: npm publish
+      - run: pnpm publish --no-git-checks
         working-directory: ./utils/storage
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -48,16 +55,20 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: package.json
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           registry-url: https://npm.pkg.github.com/
-      - run: npm install
-      - run: npm version ${{github.event.release.tag_name}}
+      - run: pnpm install
+      - run: pnpm version  --no-commit-hooks --allow-same-version --no-git-tag-version --no-workspaces-update ${{github.event.release.tag_name}}
         working-directory: ./utils/promise
       - run: make build
         working-directory: ./utils/promise
-      - run: npm publish
+      - run: pnpm publish --no-git-checks
         working-directory: ./utils/promise
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -70,16 +81,20 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: package.json
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           registry-url: https://npm.pkg.github.com/
-      - run: npm install
-      - run: npm version ${{github.event.release.tag_name}}
+      - run: pnpm install
+      - run: pnpm version  --no-commit-hooks --allow-same-version --no-git-tag-version --no-workspaces-update ${{github.event.release.tag_name}}
         working-directory: ./utils/log
       - run: make build
         working-directory: ./utils/log
-      - run: npm publish
+      - run: pnpm publish --no-git-checks
         working-directory: ./utils/log
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

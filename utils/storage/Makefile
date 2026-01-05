@@ -1,8 +1,8 @@
 
 .PHONY: typecheck 
 typecheck:
-	npm run typecheck 
+	pnpm run typecheck 
 
 .PHONY: build 
 build:
-	npm run build 
+	pnpm run build 
