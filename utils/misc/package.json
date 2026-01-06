@@ -1,0 +1,24 @@
+{
+  "name": "@o3co/js.util.misc",
+  "version": "0.0.0-snapshot",
+  "type": "module",
+  "author": "1o1 developer <develop@1o1.co.jp>",
+  "main": "index.js",
+  "license": "MIT",
+  "packageManager": "pnpm@10.27.0",
+  "exports": {
+    "./*": "./built/*"
+  },
+  "publishConfig": {
+    "@o3co:registry": "https://npm.pkg.github.com"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "typecheck": "tsc --noEmit",
+    "format": "pnpm exec @biomejs/biome --config-path ./biome.jsonc --write \"src/**/*.{js,ts,mjs,mts,json,yml}\""
+  },
+  "dependencies": {
+    "deepmerge": "^4.3.1",
+    "is-plain-object": "^5.0.0"
+  }
+}

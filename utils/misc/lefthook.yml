@@ -1,11 +1,11 @@
 pre-commit:
   parallel: true
   jobs:
-    - root: utils/storage
-      glob: utils/storage/*.{js,ts,mjs,mts}
+    - root: utils/misc
+      glob: utils/misc/*.{js,ts,mjs,mts}
       run: pnpx @biomejs/biome check --config-path ./biome.jsonc --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
       stage_fixed: true
-    - root: utils/storage
-      glob: utils/storage/*.{js,ts,mjs,mts}
+    - root: utils/misc
+      glob: utils/misc/*.{js,ts,mjs,mts}
       run: pnpm run typecheck
       stage_fixed: true
