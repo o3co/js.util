@@ -40,3 +40,14 @@ jobs:
           version: ${{github.event.release.tag_name}}
           name: "js.util.storage"
           token: ${{secrets.GITHUB_TOKEN}}
+  depublish-misc:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - uses: o3co/github-action-unpublish-package@v1
+        with:
+          package-type: "npm"
+          version: ${{github.event.release.tag_name}}
+          name: "js.util.misc"
+          token: ${{secrets.GITHUB_TOKEN}}

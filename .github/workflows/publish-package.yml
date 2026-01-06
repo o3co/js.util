@@ -98,3 +98,29 @@ jobs:
         working-directory: ./utils/log
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+  publish-misc:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://npm.pkg.github.com/
+      - run: pnpm install
+      - run: pnpm version  --no-commit-hooks --allow-same-version --no-git-tag-version --no-workspaces-update ${{github.event.release.tag_name}}
+        working-directory: ./utils/misc
+      - run: make build
+        working-directory: ./utils/misc
+      - run: pnpm publish --no-git-checks
+        working-directory: ./utils/misc
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
