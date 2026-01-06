@@ -3,10 +3,11 @@
   "version": "0.0.0-snapshot",
   "type": "module",
   "author": "1o1 developer <develop@1o1.co.jp>",
-  "main": "index.js",
+  "module": "built/index.mjs",
   "license": "MIT",
   "packageManager": "pnpm@10.27.0",
   "exports": {
+    ".": "./built/index.mjs",
     "./*": "./built/*"
   },
   "publishConfig": {
