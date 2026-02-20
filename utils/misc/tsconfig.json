@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "built",
+    "outDir": "./built",
     "rootDir": "./src",
     "composite": true,
     "declaration": true,
@@ -9,7 +9,9 @@
     "checkJs": false,
     "noImplicitAny": false,
     "esModuleInterop": true,
-    "lib": ["es2022", "dom"],
+    "moduleResolution": "nodenext",
+    "module": "nodenext",
+    "skipLibCheck": true,
     "strict": true
   },
   "include": ["src"],

@@ -9,7 +9,7 @@
     "utils/*"
   ],
   "scripts": {
-    "build": "make all/build"
+    "build": "make build"
   },
   "dependencies": {
     "typescript": "5.9.3"
