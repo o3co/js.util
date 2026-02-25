@@ -1,9 +1,9 @@
 import pLimit from "p-limit";
 
 export type RunOptions<TReturn> = {
-  stopOnFailure: boolean;
-  onSuccess: (_: TReturn) => TReturn;
-  onFailure: (_: unknown) => TReturn;
+  stopOnFailure?: boolean;
+  onSuccess?: (_: TReturn) => TReturn;
+  onFailure?: (_: unknown) => TReturn;
 };
 
 export type RunSeqOptions<TReturn> = RunOptions<TReturn>;
@@ -86,7 +86,7 @@ export async function runSeq<TItem, TReturn>(
 }
 
 export type RunParallelOption<TReturn> = RunOptions<TReturn> & {
-  limit: number;
+  limit?: number;
 };
 
 const DefaultRunParallelOption = {
@@ -98,7 +98,7 @@ const DefaultRunParallelOption = {
   },
 };
 
-type RunParallelHandler<TItem, TReturn> = (
+export type RunParallelHandler<TItem, TReturn> = (
   element: TItem,
   index: number,
   array: Array<TItem>,
