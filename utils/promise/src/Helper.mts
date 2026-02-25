@@ -1,12 +1,25 @@
 import pLimit from "p-limit";
 
-export type RunOptions<B> = {
+export type RunOptions<TReturn> = {
   stopOnFailure: boolean;
-  onSuccess: (_: B) => B;
-  onFailure: (_: unknown) => B;
+  onSuccess: (_: TReturn) => TReturn;
+  onFailure: (_: unknown) => TReturn;
 };
 
-export type RunSeqOptions<B> = RunOptions<B>;
+export type RunSeqOptions<TReturn> = RunOptions<TReturn>;
+
+export class PromiseFailure extends Error {
+  constructor({
+    message = "Failed",
+    cause,
+  }: { message: string; cause?: Error }) {
+    super(message);
+    this.name = "PromiseFailure";
+    if (cause) {
+      this.cause = cause;
+    }
+  }
+}
 
 const DefaultRunSeqOptions = {
   stopOnFailure: true,
@@ -16,7 +29,10 @@ const DefaultRunSeqOptions = {
   },
 };
 
-type RunSeqHandler<A, B> = (value: A, index: number) => Promise<B>;
+type RunSeqHandler<TItem, TReturn> = (
+  value: TItem,
+  index: number,
+) => Promise<TReturn>;
 
 /**
  * 指定した配列の各要素に対して非同期関数を順番に実行する。
@@ -25,21 +41,21 @@ type RunSeqHandler<A, B> = (value: A, index: number) => Promise<B>;
  * @param options stopOnFailure: trueの場合、エラー発生時に処理を中断する
  * @returns 各非同期処理の結果を格納した配列
  */
-export async function runSeq<A, B>(
-  entries: Array<A>,
-  asyncFn: RunSeqHandler<A, B>,
+export async function runSeq<TItem, TReturn>(
+  entries: Array<TItem>,
+  asyncFn: RunSeqHandler<TItem, TReturn>,
   {
     stopOnFailure = DefaultRunSeqOptions.stopOnFailure,
     onSuccess = DefaultRunSeqOptions.onSuccess,
     onFailure = DefaultRunSeqOptions.onFailure,
-  }: RunSeqOptions<B> = DefaultRunSeqOptions,
-): Promise<Array<B | Error>> {
-  return await (entries.reduce(
+  }: RunSeqOptions<TReturn> = DefaultRunSeqOptions,
+): Promise<Array<TReturn | PromiseFailure>> {
+  return await entries.reduce(
     async (
-      prev: Promise<Array<B | Error>>,
-      cur: A,
+      prev: Promise<Array<TReturn | PromiseFailure>>,
+      cur: TItem,
       index: number,
-    ): Promise<Array<B | Error>> => {
+    ): Promise<Array<TReturn | PromiseFailure>> => {
       return [
         ...(await prev),
         await (async () => {
@@ -47,26 +63,29 @@ export async function runSeq<A, B>(
             const ret = await asyncFn(cur, index);
 
             return onSuccess(ret);
-          } catch (c1) {
+          } catch (c1: unknown) {
             try {
               return onFailure(c1);
             } catch (c2) {
               if (stopOnFailure) {
-                throw c2;
+                throw new PromiseFailure({
+                  message: "Failed",
+                  cause: c2 instanceof Error ? c2 : undefined,
+                });
               }
               return c2 instanceof Error
-                ? c2
-                : new Error(String(c2), { cause: c2 });
+                ? new PromiseFailure({ message: String(c2), cause: c2 })
+                : new PromiseFailure({ message: String(c2) });
             }
           }
         })(),
       ];
     },
-    Promise.resolve([]) as Promise<Array<B | Error>>,
-  ) as Promise<Array<B | Error>>);
+    Promise.resolve([]) as Promise<Array<TReturn | PromiseFailure>>,
+  );
 }
 
-type RunParallelOption<B> = RunOptions<B> & {
+export type RunParallelOption<TReturn> = RunOptions<TReturn> & {
   limit: number;
 };
 
@@ -79,22 +98,22 @@ const DefaultRunParallelOption = {
   },
 };
 
-type RunParallelHandler<A, B> = (
-  element: A,
+type RunParallelHandler<TItem, TReturn> = (
+  element: TItem,
   index: number,
-  array: Array<A>,
-) => Promise<B>;
+  array: Array<TItem>,
+) => Promise<TReturn>;
 
-export async function runParallel<A, B>(
-  entries: Array<A>,
-  pHandler: RunParallelHandler<A, B>,
+export async function runParallel<TItem, TReturn>(
+  entries: Array<TItem>,
+  pHandler: RunParallelHandler<TItem, TReturn>,
   {
     limit = DefaultRunParallelOption.limit,
     stopOnFailure = DefaultRunParallelOption.stopOnFailure,
     onSuccess = DefaultRunParallelOption.onSuccess,
     onFailure = DefaultRunParallelOption.onFailure,
-  }: RunParallelOption<B> = DefaultRunParallelOption,
-): Promise<Array<B | Error>> {
+  }: RunParallelOption<TReturn> = DefaultRunParallelOption,
+): Promise<Array<TReturn | PromiseFailure>> {
   const executor = pLimit(limit);
 
   return await Promise.all(
@@ -103,16 +122,19 @@ export async function runParallel<A, B>(
         const ret = await executor(() => pHandler(elem, index, array));
 
         return onSuccess(ret);
-      } catch (c1) {
+      } catch (c1: unknown) {
         try {
           return onFailure(c1);
-        } catch (c2) {
+        } catch (c2: unknown) {
           if (stopOnFailure) {
-            throw c2;
+            throw new PromiseFailure({
+              message: "Failed",
+              cause: c2 instanceof Error ? c2 : undefined,
+            });
           }
           return c2 instanceof Error
-            ? c2
-            : new Error(String(c2), { cause: c2 });
+            ? new PromiseFailure({ message: String(c2), cause: c2 })
+            : new PromiseFailure({ message: String(c2) });
         }
       }
     }),
