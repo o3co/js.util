@@ -8,10 +8,7 @@
   "packageManager": "pnpm@10.27.0",
   "exports": {
     ".": "./built/index.mjs",
-    "./*": {
-      "import": "./built/*.mjs",
-      "types": "./built/*.d.ts"
-    }
+    "./*": "./built/*"
   },
   "publishConfig": {
     "@o3co:registry": "https://npm.pkg.github.com"
