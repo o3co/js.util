@@ -18,11 +18,10 @@
     "typecheck": "tsc --noEmit",
     "format": "pnpm exec @biomejs/biome --config-path ./biome.jsonc --write \"src/**/*.{js,ts,mjs,mts,json,yml}\""
   },
-  "dependencies": {},
   "peerDependencies": {
-    "p-limit": "7.2.x"
+    "p-limit": "7.*"
   },
   "devDependencies": {
-    "p-limit": "7.2.x"
+    "p-limit": "~7.3.0"
   }
 }
