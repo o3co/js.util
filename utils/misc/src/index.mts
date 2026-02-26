@@ -1,1 +1,1 @@
-export * as merge from "./merge.mjs";
+export * as types from "./types/index.mjs";

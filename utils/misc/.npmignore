@@ -2,3 +2,5 @@ src/
 tsconfig.json
 
 *.test.mjs
+*.test.d.mts
+*.test.d.mts.map
