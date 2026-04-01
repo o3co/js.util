@@ -1,10 +1,7 @@
-/**
- * Merge objects
- */
 import _deepMerge from "deepmerge";
 import { isPlainObject } from "is-plain-object";
 
-type RecursivelyPartial<T> = {
+export type RecursivelyPartial<T> = {
   [P in keyof T]?: T[P] extends (infer U)[]
     ? RecursivelyPartial<U>[]
     : T[P] extends object
@@ -12,19 +9,19 @@ type RecursivelyPartial<T> = {
       : T[P];
 };
 
-export const deepMerge = <T extends object>(
-  source: RecursivelyPartial<T>,
+export function deepMerge<T extends object>(
+  source: T,
   overwrite: RecursivelyPartial<T>,
-): T => {
+): T {
   return _deepMerge(source as object, overwrite as object, {
     isMergeableObject: isPlainObject,
-  });
-};
+  }) as T;
+}
 
-export const deepMergeAll = <T extends object>(
+export function deepMergeAll<T extends object>(
   arr: RecursivelyPartial<T>[],
-): T => {
+): T {
   return _deepMerge.all(arr, {
     isMergeableObject: isPlainObject,
   }) as T;
-};
+}
