@@ -1,4 +1,5 @@
 import _deepMerge from "deepmerge";
+// @ts-expect-error is-plain-object exports don't resolve under nodenext moduleResolution
 import { isPlainObject } from "is-plain-object";
 
 export type RecursivelyPartial<T> = {
