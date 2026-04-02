@@ -16,6 +16,7 @@ export function deepMerge<T extends object>(
 ): T {
   return _deepMerge(source as object, overwrite as object, {
     isMergeableObject: isPlainObject,
+    arrayMerge: (_target, source) => source,
   }) as T;
 }
 
@@ -24,5 +25,6 @@ export function deepMergeAll<T extends object>(
 ): T {
   return _deepMerge.all(arr, {
     isMergeableObject: isPlainObject,
+    arrayMerge: (_target, source) => source,
   }) as T;
 }
