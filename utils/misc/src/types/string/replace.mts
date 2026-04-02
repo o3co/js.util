@@ -1,7 +1,7 @@
 import type { Stringifiable } from "../defined.mjs";
 
 export type ReplaceTokensOptions = {
-  useUpperCaseKey: boolean;
+  useUpperCaseKey?: boolean;
   // a char for both start and end delimiter, or a string of two chars for start and end delimiter respectively. Default is `<>`
   delimiter?: string;
 };

@@ -7,12 +7,7 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@o3co/js.util.storage/*": [
-        "utils/storage/src/*"
-      ]
-    }
+    "baseUrl": "."
   }
 }
 
