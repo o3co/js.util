@@ -21,8 +21,10 @@ export type RunParallelOptions = RunOptions & {
 
 /**
  * 配列の各要素に対して非同期関数を順番に実行する。
- * stopOnFailure: true の場合、最初のエラーで Promise を reject する。
- * stopOnFailure: false の場合、全件実行し結果配列に rejected を含める。
+ *
+ * stopOnFailure: true (default) — 最初のエラーで即座に throw し、残りのタスクは実行しない。
+ *
+ * stopOnFailure: false — 全件実行し結果配列に rejected を含める。
  */
 export async function runSeq<TItem, TReturn>(
   entries: Array<TItem>,
@@ -50,8 +52,11 @@ export async function runSeq<TItem, TReturn>(
 /**
  * 配列の各要素に対して非同期関数を並列実行する。
  * concurrency で同時実行数を制限する。
- * stopOnFailure: true の場合、最初のエラーで Promise を reject する。
- * stopOnFailure: false の場合、全件実行し結果配列に rejected を含める。
+ *
+ * stopOnFailure: true (default) — 最初のエラーで Promise を reject する。
+ * ただし既にキューされた並行タスクはキャンセルされない（Promise.all と同じ挙動）。
+ *
+ * stopOnFailure: false — 全件実行し結果配列に rejected を含める。
  */
 export async function runParallel<TItem, TReturn>(
   entries: Array<TItem>,
