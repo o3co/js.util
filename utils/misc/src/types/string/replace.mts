@@ -31,11 +31,11 @@ export function replaceTokens(
     const [startDelimiter, endDelimiter] = (() => {
       if (delimiter.length === 1) {
         return [delimiter, delimiter];
-      } else if (delimiter.length >= 2) {
-        return delimiter.split("");
+      } else if (delimiter.length === 2) {
+        return [delimiter[0], delimiter[1]];
       } else {
         throw new Error(
-          "Delimiter must be a single character or a string of two characters",
+          "Delimiter must be a single character or a string of exactly two characters",
         );
       }
     })();

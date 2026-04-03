@@ -54,4 +54,10 @@ describe("replaceTokens", () => {
       replaceTokens("test", { a: "b" }, { delimiter: "" }),
     ).toThrow();
   });
+
+  it("should throw on delimiter longer than 2 characters", () => {
+    expect(() =>
+      replaceTokens("test", { a: "b" }, { delimiter: "<>>" }),
+    ).toThrow();
+  });
 });
