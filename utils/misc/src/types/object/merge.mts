@@ -1,6 +1,7 @@
 import _deepMerge from "deepmerge";
-// @ts-expect-error is-plain-object exports don't resolve under nodenext moduleResolution
-import { isPlainObject } from "is-plain-object";
+function isPlainObject(value: unknown): boolean {
+  return value != null && typeof value === "object" && Object.getPrototypeOf(value) === Object.prototype;
+}
 
 export type RecursivelyPartial<T> = {
   [P in keyof T]?: T[P] extends (infer U)[]
